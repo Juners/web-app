@@ -1,0 +1,45 @@
+.resource {
+  &.editable {
+    cursor: pointer;
+  }
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+  font-size: 18px;
+
+  &:not(.terraformation) {
+    background: lighten($color: lightgray, $amount: 10);
+  }
+
+  .ammount {
+    font-family: "TFM";
+  }
+
+  .generation-wrapper {
+    font-family: "TFM";
+    text-align: center;
+    width: 25px;
+    padding: 0 5px;
+
+    background-color: lightgray;
+    // background: linear-gradient(
+    //   180deg,
+    //   rgba(120, 120, 120, 1) 0%,
+    //   rgba(161, 161, 161, 1) 60%,
+    //   rgba(218, 218, 218, 1) 100%
+    // );
+
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    border-image-source: linear-gradient(
+      180deg,
+      rgb(170, 170, 170) 0%,
+      rgba(74, 74, 74, 1) 100%
+    );
+  }
+}
