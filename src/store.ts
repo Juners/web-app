@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import resourceReducer from "./resourceSlice";
+import globalViewSlice from "./globalViewSlice";
+import playerSlice from "./playerSlice";
 
 const store = configureStore({
   reducer: {
-    resource: resourceReducer,
+    globalView: globalViewSlice,
+    playerView: playerSlice,
   },
 });
 

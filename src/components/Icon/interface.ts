@@ -1,4 +1,4 @@
-import { ResourceType } from "@/views/Board/components/Resource/interface";
+import { ResourceType } from "../Board/components/Resource/interface";
 
 export enum TileType {
   FOREST = "FOREST",

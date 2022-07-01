@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/hooks";
-import { selectResource } from "@/resourceSlice";
+import { selectResource } from "@/playerSlice";
 
 import ResourceIcon from "@/components/Icon";
 
@@ -10,25 +10,19 @@ import "./style.scss";
 
 function Resource({
   type,
+  data,
   editable = false,
   minGen = 0,
-  openModal,
+  onClickCallback,
 }: ResourceProps) {
-  const resource = useAppSelector(selectResource)(type);
-
-  const [ammount, setAmmount] = useState(0);
-  const [generation, setGeneration] = useState(0);
-
-  useEffect(() => {
-    setAmmount(resource.ammount);
-    setGeneration(resource.generation);
-  }, [resource]);
+  const ammount = data?.ammount || 0;
+  const generation = data?.generation || 0;
 
   return (
     <div
       className={`resource ${type.toLowerCase()} ${editable ? "editable" : ""}`}
       onClick={() => {
-        editable && openModal(minGen);
+        editable && onClickCallback(minGen);
       }}
     >
       <div className="icon-wrapper">

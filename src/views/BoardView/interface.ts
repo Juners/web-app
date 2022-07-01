@@ -1,5 +1,5 @@
 import { PlayerObject } from "../ChoosePlayer/interface";
 
-export interface SimplePlayerBoardProps {
+export interface PlayerBoardProps {
   logedPlayer: PlayerObject;
 }

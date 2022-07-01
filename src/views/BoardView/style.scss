@@ -1,0 +1,30 @@
+.player-board {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .top-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 2px solid lightgray;
+
+    .game-generation {
+      font-family: "TFM";
+      height: fit-content;
+    }
+
+    .player-info {
+      font-size: large;
+    }
+
+    a button {
+      width: 100%;
+    }
+    button {
+      padding: 10px;
+    }
+  }
+}

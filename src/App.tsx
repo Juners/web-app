@@ -2,44 +2,44 @@ import { useEffect, useRef, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 
-import PlayerBoard from "./views/Board";
+import PlayerBoard from "./views/BoardView";
 import ChoosePlayer from "./views/ChoosePlayer/ChoosePlayer";
 import ChangeBoard from "./views/ChangeBoard";
+import GlobalView from "./views/GlobalView";
 import SimplePlayerBoard from "./views/SimpleBoard";
 
 import { useAppDispatch } from "./hooks";
-import { changeBoardGeneration, changeOutdated } from "./resourceSlice";
+import { changeBoardGeneration, changeOutdated } from "./playerSlice";
+import {
+  changeBoardGeneration as changeGlobalViewBoardGen,
+  changeOutdated as changeGlobalOutdated,
+} from "./globalViewSlice";
+
+import { PlayerObject } from "./views/ChoosePlayer/interface";
 
 import "./App.scss";
 
 function App() {
   const dispatch = useAppDispatch();
-  // const resources = useAppSelector(selectResourceState);
 
-  const [player, setPlayer] = useState<string>();
+  const [player, setPlayer] = useState<PlayerObject>();
 
   const socket = useRef<Socket>();
 
   useEffect(() => {
     if (!socket.current) {
       console.info("Opening socket");
-      socket.current = io("ws://localhost:3001");
-      // Connection opened
-      socket.current.on("connect", () => {
-        console.log("connected!");
-        socket.current?.send("Hello Server!");
-      });
-      // Listen for messages
-      socket.current.on("message", function (event) {
-        console.log("Message from server ", event.data);
-      });
+      socket.current = io(`ws://${window.location.hostname}:3001`);
 
       socket.current.on("newGeneration", function (event) {
         dispatch(changeBoardGeneration(event.data.generation));
+        dispatch(changeGlobalViewBoardGen(event.data.generation));
       });
 
       socket.current.on("boardUpdated", function (event) {
+        console.log("boardUpdated");
         dispatch(changeOutdated(event.data.user));
+        dispatch(changeGlobalOutdated());
       });
     }
     // return () => {
@@ -69,12 +69,17 @@ function App() {
             />
           </>
         ) : (
-          <Route
-            path="/*"
-            element={
-              <ChoosePlayer onPlayerSelected={(player) => setPlayer(player)} />
-            }
-          />
+          <>
+            <Route path="/spectator" element={<GlobalView />} />
+            <Route
+              path="/*"
+              element={
+                <ChoosePlayer
+                  onPlayerSelected={(player) => setPlayer(player)}
+                />
+              }
+            />
+          </>
         )}
       </Routes>
     </div>

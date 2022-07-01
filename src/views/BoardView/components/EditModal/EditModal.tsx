@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 
-import {
-  changeAmmount,
-  changeGeneration,
-  selectResource,
-} from "@/resourceSlice";
+import { changeAmmount, changeGeneration, selectResource } from "@/playerSlice";
 import { useAppSelector, useAppDispatch } from "@/hooks";
 import Modal from "@/components/Modal";
 import PrettyDisplayNumber from "@/components/PrettyDisplayNumber";
-
-import { ResourceType } from "../Resource/interface";
+import { ResourceType } from "@/components/Board/components/Resource/interface";
 
 import "./style.scss";
 

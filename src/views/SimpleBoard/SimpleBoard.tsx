@@ -6,23 +6,25 @@ import {
   changeState,
   selectBoardGenerationState,
   selectIsOutdated,
-  selectResourceState,
-} from "@/resourceSlice";
+  selectPlayerViewState,
+} from "@/playerSlice";
 
 import { SimplePlayerBoardProps } from "./interface";
 
 import "./style.scss";
+import { toTitleCase } from "@/index";
+import { USERS } from "../ChoosePlayer/ChoosePlayer";
 
 function SimplePlayerBoard({ logedPlayer }: SimplePlayerBoardProps) {
   const dispatch = useAppDispatch();
   const boardGeneration = useAppSelector(selectBoardGenerationState);
   const outdated = useAppSelector(selectIsOutdated);
-  const resources = useAppSelector(selectResourceState);
+  const playerView = useAppSelector(selectPlayerViewState);
 
   const { user = "" } = useParams();
 
   const [emptyBoard, setEmptyBoard] = useState(false);
-  const [ownBoard, setOwnBoard] = useState(user === logedPlayer);
+  const [ownBoard, setOwnBoard] = useState(user === logedPlayer.name);
 
   const syncing = useRef(false);
 
@@ -31,7 +33,7 @@ function SimplePlayerBoard({ logedPlayer }: SimplePlayerBoardProps) {
       syncing.current = true;
 
       const genCall = await fetch(`http://192.168.0.27:3001/currentGeneration`);
-      const { gen } = await genCall.json();
+      const gen = await genCall.json();
 
       const boardCall = await fetch(
         `http://192.168.0.27:3001/users/${user}/board`
@@ -50,28 +52,33 @@ function SimplePlayerBoard({ logedPlayer }: SimplePlayerBoardProps) {
         );
       } else if (boardCall.status === 404) {
         syncing.current = false;
-        user === logedPlayer && setEmptyBoard(true);
+        ownBoard && setEmptyBoard(true);
       }
     }
 
     !syncing.current && syncLocalBoard();
-  }, [dispatch, user, boardGeneration, logedPlayer, outdated]);
+  }, [dispatch, user, boardGeneration, logedPlayer, outdated, ownBoard]);
 
   useEffect(() => {
-    if (emptyBoard && user === logedPlayer) {
+    if (emptyBoard && ownBoard) {
       fetch(`http://192.168.0.27:3001/users/${user}/board/simple`, {
         headers: {
           "Content-Type": "application/json",
         },
         method: "PUT",
-        body: JSON.stringify({ simpleBoard: true, doneGen: false }),
+        body: JSON.stringify({
+          simpleBoard: true,
+          doneGen: false,
+          playerColor: USERS.find((u) => u.name === user)?.color,
+          user,
+        }),
       });
       setEmptyBoard(false);
     }
-  }, [emptyBoard, user, logedPlayer]);
+  }, [emptyBoard, user, logedPlayer, ownBoard]);
 
   useEffect(() => {
-    setOwnBoard(user === logedPlayer);
+    setOwnBoard(user === logedPlayer.name);
   }, [logedPlayer, user]);
 
   return (
@@ -79,7 +86,7 @@ function SimplePlayerBoard({ logedPlayer }: SimplePlayerBoardProps) {
       <div className="board">
         <div className="top-menu">
           <div className="player-info">
-            <b>{user[0].toUpperCase() + user.substring(1)}</b>
+            <b>{toTitleCase(user)}</b>
             {ownBoard ? " (My board)" : ""}
           </div>
           <div className="game-generation">
@@ -92,8 +99,8 @@ function SimplePlayerBoard({ logedPlayer }: SimplePlayerBoardProps) {
           </Link>
 
           <button
-            hidden={!ownBoard && !resources.doneGen}
-            disabled={resources.doneGen}
+            hidden={!ownBoard && !playerView.doneGen}
+            disabled={playerView.doneGen}
             onClick={() => {
               async function finishGen() {
                 syncing.current = true;
@@ -112,7 +119,7 @@ function SimplePlayerBoard({ logedPlayer }: SimplePlayerBoardProps) {
               ownBoard && !syncing.current && finishGen();
             }}
           >
-            {resources.doneGen ? "Generation finished" : "Finish generation"}
+            {playerView.doneGen ? "Generation finished" : "Finish generation"}
           </button>
         </div>
       </div>

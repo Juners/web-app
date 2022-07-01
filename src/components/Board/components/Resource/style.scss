@@ -12,7 +12,8 @@
   font-size: 18px;
 
   &:not(.terraformation) {
-    background: lighten($color: lightgray, $amount: 10);
+    // background: lighten($color: lightgray, $amount: 10);
+    background-color: rgba(238, 238, 238, 0.8);
   }
 
   .ammount {

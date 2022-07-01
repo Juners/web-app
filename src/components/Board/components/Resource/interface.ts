@@ -8,10 +8,16 @@ export enum ResourceType {
   HEAT = "HEAT",
 }
 
+export type ResourceData = {
+  ammount: number;
+  generation: number;
+};
+
 export interface ResourceProps {
   type: ResourceType;
+  data?: ResourceData;
   editable?: boolean;
   /** The minimum value in the generation. Defaults to 0 */
   minGen?: number;
-  openModal: (minGen?: number) => void;
+  onClickCallback: (minGen?: number) => void;
 }

@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { ChoosePlayerProperties, PlayerObject } from "./interface";
+
 import "./style.scss";
 
-interface ChoosePlayerProperties {
-  onPlayerSelected: (player: string) => void;
-}
+export const USERS: PlayerObject[] = [
+  { name: "javier", color: "#FFE333" },
+  { name: "ivan", color: "#44AB7D" },
+  { name: "alex", color: "#8C8C8C" },
+  { name: "marc", color: "#FF5950" },
+  { name: "sergi", color: "#279BFF" },
+];
 
 function ChoosePlayer({ onPlayerSelected }: ChoosePlayerProperties) {
-  const [player, setPlayer] = useState<string>();
+  const [player, setPlayer] = useState<PlayerObject>();
   const [simple, setSimple] = useState(false);
 
   useEffect(() => {
@@ -23,37 +29,18 @@ function ChoosePlayer({ onPlayerSelected }: ChoosePlayerProperties) {
           {simple ? "Disable" : "Enable"} Simple mode
         </button>
       </div>
-      <ul>
-        <Link
-          onClick={() => setPlayer("javier")}
-          to={`/boards/javier${simple ? "/simple" : ""}`}
-        >
-          <li>Javier</li>
-        </Link>
-        <Link
-          onClick={() => setPlayer("ivan")}
-          to={`/boards/ivan${simple ? "/simple" : ""}`}
-        >
-          <li>Ivan</li>
-        </Link>
-        <Link
-          onClick={() => setPlayer("alex")}
-          to={`/boards/alex${simple ? "/simple" : ""}`}
-        >
-          <li>Alex</li>
-        </Link>
-        <Link
-          onClick={() => setPlayer("marc")}
-          to={`/boards/marc${simple ? "/simple" : ""}`}
-        >
-          <li>Marc</li>
-        </Link>
-        <Link
-          onClick={() => setPlayer("sergi")}
-          to={`/boards/sergi${simple ? "/simple" : ""}`}
-        >
-          <li>Sergi</li>
-        </Link>
+      <ul className="users">
+        {USERS.map((user) => (
+          <Link
+            key={user.name}
+            onClick={() => setPlayer(user)}
+            to={`/boards/${user.name}${simple ? "/simple" : ""}`}
+          >
+            <li className="user" style={{ background: user.color }}>
+              {user.name.toUpperCase()}
+            </li>
+          </Link>
+        ))}
       </ul>
     </div>
   );

@@ -1,0 +1,50 @@
+.board {
+  &.gen-finished {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .loading-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .spin::before {
+      animation: 1.5s linear infinite spinner;
+      animation-play-state: inherit;
+      border: solid 5px #cfd0d1;
+      border-bottom-color: #1c87c9;
+      border-radius: 50%;
+      content: "";
+      height: 40px;
+      position: absolute;
+      transform: translate3d(-50%, -50%, 0);
+      width: 40px;
+      will-change: transform;
+    }
+  }
+
+  .terraformation-marker {
+    border-bottom: 5px solid rgba(159, 159, 159, 0.9);
+  }
+
+  .resources {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 5px;
+    background-color: rgba(159, 159, 159, 0.9);
+  }
+}

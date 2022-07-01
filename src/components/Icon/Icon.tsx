@@ -1,5 +1,3 @@
-import { ResourceType } from "@/views/Board/components/Resource/interface";
-
 import Bedge from "./assets/Bedge.png";
 import Pedant from "./assets/pedant.jpg";
 import Money from "./assets/Money.png";
@@ -11,6 +9,8 @@ import Heat from "./assets/Heat.png";
 import Terraformation from "./assets/Terraformation.png";
 import Forest from "./assets/Forest.png";
 import Temperature from "./assets/Temperature.png";
+
+import { ResourceType } from "../Board/components/Resource/interface";
 
 import { IconProps, MiscIcons, TileType } from "./interface";
 

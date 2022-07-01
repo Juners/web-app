@@ -24,3 +24,10 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+export const toTitleCase = (text: string) => {
+  return text
+    .split(" ")
+    .map((t) => (t.length > 1 ? t[0].toUpperCase() + t.substring(1) : t))
+    .join("");
+};

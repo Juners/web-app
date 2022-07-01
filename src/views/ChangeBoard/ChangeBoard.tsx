@@ -1,36 +1,46 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import * as BoardsApi from "@/services/api/boards";
+
+import { PlayerObject } from "../ChoosePlayer/interface";
 
 import "./style.scss";
 
 interface ChangeBoardProps {
-  logedPlayer: string;
+  logedPlayer: PlayerObject;
 }
 
 function ChangeBoard({ logedPlayer }: ChangeBoardProps) {
-  const [boards, setBoards] = useState<string[]>();
+  const [boards, setBoards] = useState<PlayerObject[]>();
 
   useEffect(() => {
     async function syncAvailableBoards() {
-      const call = await fetch("http://192.168.0.27:3001/boards");
-      const data = await call.json();
-      setBoards(data);
+      const data = await BoardsApi.GetBoards();
+      setBoards(
+        Object.values(data).map(({ user, playerColor }) => ({
+          name: user,
+          color: playerColor,
+        }))
+      );
     }
 
     syncAvailableBoards();
   }, []);
 
   return (
-    <div className="choose-player">
+    <div className="choose-board">
       <h1>Choose which board to see</h1>
-      <ul>
-        {boards?.map((board) => (
-          <NavLink to={board} key={board}>
-            <li>
-              {board[0].toUpperCase() + board.substring(1)}
-              {board === logedPlayer ? " (Your board)" : ""}
+      <ul className="users">
+        {boards?.map((user) => (
+          <Link key={user.name} to={`/boards/${user.name}`}>
+            <li
+              className={`user ${user.name === logedPlayer.name ? "self" : ""}`}
+              style={{ background: user.color }}
+            >
+              {user.name.toUpperCase()}
             </li>
-          </NavLink>
+          </Link>
         ))}
       </ul>
     </div>

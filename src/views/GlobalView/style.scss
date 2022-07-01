@@ -1,0 +1,50 @@
+.global-view {
+  .generation-info {
+    font-family: "TFM";
+    font-size: xx-large;
+    text-align: center;
+    padding: 15px;
+    border-bottom: 5px solid darkgray;
+  }
+
+  .boards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+
+    .board-wrapper {
+      &.gen-finished {
+        -webkit-filter: grayscale(75%);
+        filter: grayscale(75%);
+
+        border: 5px solid darkgray;
+      }
+
+      flex-basis: calc(30% - 80px);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      border: 5px solid lightgray;
+
+      .player-name {
+        margin: 5px;
+        font-family: "TFM";
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 25px;
+
+        span {
+          padding: 0 20px;
+          // border-bottom: 5px solid lightgray;
+          // background-color: lightgray;
+        }
+      }
+    }
+  }
+}
