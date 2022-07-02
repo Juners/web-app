@@ -1,4 +1,5 @@
 .choose-board {
+  text-align: center;
   ul.users {
     list-style: none;
     display: flex;
@@ -15,15 +16,30 @@
       letter-spacing: 1px;
     }
 
-    li.user {
-      padding: 25px;
-      border: 1px solid black;
-      text-align: center;
+    li {
+      &.gen-finished {
+        -webkit-filter: grayscale(80%);
+        filter: grayscale(80%);
+        font-style: italic;
+      }
 
-      &.self::after {
-        color: #3f3f3f;
-        content: "(YOU)";
-        margin-left: 10px;
+      &.user.turn-owner {
+        border: 15px solid;
+        border-image-slice: 1;
+        border-width: 10px;
+        border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+      }
+
+      &.user {
+        padding: 25px;
+        border: 1px solid black;
+        text-align: center;
+
+        &.self::after {
+          color: #3f3f3f;
+          content: "(YOU)";
+          margin-left: 10px;
+        }
       }
     }
   }

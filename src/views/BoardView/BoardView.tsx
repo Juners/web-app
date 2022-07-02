@@ -17,6 +17,7 @@ import { PlayerBoardProps as PlayerBoardViewProps } from "./interface";
 import "./style.scss";
 import { toTitleCase } from "@/index";
 import { USERS } from "../ChoosePlayer/ChoosePlayer";
+import { EndTurn, FinishGen } from "@/services/api/boards";
 
 function PlayerBoardView({ logedPlayer }: PlayerBoardViewProps) {
   const dispatch = useAppDispatch();
@@ -138,18 +139,40 @@ function PlayerBoardView({ logedPlayer }: PlayerBoardViewProps) {
           </Link>
 
           <button
+            hidden={!ownBoard && !resources.ownTurn}
+            disabled={!resources.ownTurn}
+            onClick={() => {
+              async function finishGen() {
+                syncing.current = true;
+
+                const board = await EndTurn(user);
+                syncing.current = false;
+                dispatch(
+                  changeState({ state: board, user: user, fetch: true })
+                );
+              }
+
+              ownBoard && !syncing.current && finishGen();
+            }}
+          >
+            {ownBoard ? (
+              <>{resources.ownTurn ? "End turn" : "Not your turn"}</>
+            ) : (
+              <>{resources.ownTurn ? "Current turn owner" : ""}</>
+            )}
+          </button>
+
+          <button
             hidden={!ownBoard && !resources.doneGen}
             disabled={resources.doneGen}
             onClick={() => {
               async function finishGen() {
                 syncing.current = true;
-                const call = await fetch(
-                  `http://192.168.0.27:3001/users/${user}/board/finishGen`,
-                  { method: "POST" }
-                );
 
-                const board = await call.json();
+                const board = await FinishGen(user);
+
                 syncing.current = false;
+
                 dispatch(
                   changeState({ state: board, user: user, fetch: true })
                 );

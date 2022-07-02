@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import * as BoardsApi from "@/services/api/boards";
 
 import { PlayerObject } from "../ChoosePlayer/interface";
+import { PlayerViewState } from "@/playerSlice";
 
 import "./style.scss";
 
@@ -12,17 +13,12 @@ interface ChangeBoardProps {
 }
 
 function ChangeBoard({ logedPlayer }: ChangeBoardProps) {
-  const [boards, setBoards] = useState<PlayerObject[]>();
+  const [boards, setBoards] = useState<PlayerViewState[]>();
 
   useEffect(() => {
     async function syncAvailableBoards() {
       const data = await BoardsApi.GetBoards();
-      setBoards(
-        Object.values(data).map(({ user, playerColor }) => ({
-          name: user,
-          color: playerColor,
-        }))
-      );
+      setBoards(Object.values(data));
     }
 
     syncAvailableBoards();
@@ -32,13 +28,17 @@ function ChangeBoard({ logedPlayer }: ChangeBoardProps) {
     <div className="choose-board">
       <h1>Choose which board to see</h1>
       <ul className="users">
-        {boards?.map((user) => (
-          <Link key={user.name} to={`/boards/${user.name}`}>
+        {boards?.map((player) => (
+          <Link key={player.user} to={`/boards/${player.user}`}>
             <li
-              className={`user ${user.name === logedPlayer.name ? "self" : ""}`}
-              style={{ background: user.color }}
+              className={`user 
+               ${player.user === logedPlayer.name ? "self" : ""}
+               ${player.doneGen ? "gen-finished" : ""}
+               ${player.ownTurn ? "turn-owner" : ""}
+              `}
+              style={{ background: player.playerColor }}
             >
-              {user.name.toUpperCase()}
+              {player.user.toUpperCase()}
             </li>
           </Link>
         ))}

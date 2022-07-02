@@ -17,6 +17,7 @@ export interface PlayerViewState extends ResourceState {
   fetch: boolean;
   generation: number;
   outdated: boolean;
+  ownTurn: boolean;
   user: string;
   playerColor: string;
 }
@@ -27,6 +28,7 @@ const initialState: PlayerViewState = {
   fetch: false,
   generation: 1,
   outdated: false,
+  ownTurn: false,
   user: "",
   playerColor: "",
   TERRAFORMATION: {

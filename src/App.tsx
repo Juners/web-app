@@ -37,7 +37,6 @@ function App() {
       });
 
       socket.current.on("boardUpdated", function (event) {
-        console.log("boardUpdated");
         dispatch(changeOutdated(event.data.user));
         dispatch(changeGlobalOutdated());
       });

@@ -14,6 +14,7 @@ import { SimplePlayerBoardProps } from "./interface";
 import "./style.scss";
 import { toTitleCase } from "@/index";
 import { USERS } from "../ChoosePlayer/ChoosePlayer";
+import { EndTurn } from "@/services/api/boards";
 
 function SimplePlayerBoard({ logedPlayer }: SimplePlayerBoardProps) {
   const dispatch = useAppDispatch();
@@ -97,6 +98,30 @@ function SimplePlayerBoard({ logedPlayer }: SimplePlayerBoardProps) {
           <Link to="/boards">
             <button>See other boards</button>
           </Link>
+
+          <button
+            hidden={!ownBoard && !playerView.ownTurn}
+            disabled={!playerView.ownTurn}
+            onClick={() => {
+              async function finishGen() {
+                syncing.current = true;
+
+                const board = await EndTurn(user);
+                syncing.current = false;
+                dispatch(
+                  changeState({ state: board, user: user, fetch: true })
+                );
+              }
+
+              ownBoard && !syncing.current && finishGen();
+            }}
+          >
+            {ownBoard ? (
+              <>{playerView.ownTurn ? "End turn" : "Not your turn"}</>
+            ) : (
+              <>{playerView.ownTurn ? "Current turn owner" : ""}</>
+            )}
+          </button>
 
           <button
             hidden={!ownBoard && !playerView.doneGen}

@@ -13,16 +13,33 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
+    gap: 5px;
+    padding-top: 10px;
 
     .board-wrapper {
       &.gen-finished {
         -webkit-filter: grayscale(75%);
         filter: grayscale(75%);
 
-        border: 5px solid darkgray;
+        border: 10px solid darkgray;
       }
+      &.turn-owner {
+        border: 15px solid;
+        border-image-slice: 1;
+        border-width: 10px;
+        border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+        .terraformation-marker {
+          border-bottom: 10px solid;
+          border-image-slice: 1;
+          border-width: 5px;
+          border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+        }
+        .resources {
+          background: linear-gradient(to left, #743ad5, #d53a9d);
+        }
+      }
+
+      box-sizing: border-box;
 
       flex-basis: calc(30% - 80px);
 
@@ -30,7 +47,7 @@
       flex-direction: column;
       justify-content: center;
 
-      border: 5px solid lightgray;
+      border: 10px solid lightgray;
 
       .player-name {
         margin: 5px;

@@ -33,8 +33,6 @@ function GlobalView() {
           generation,
         })
       );
-
-      console.log(generation);
     }
 
     isOutdated && syncGlobalView();
@@ -44,12 +42,12 @@ function GlobalView() {
     <div className="global-view">
       <div className="generation-info">Generation {gameGeneration}</div>
       <div className="boards">
-      {Object.entries(boards).map(([player, board]) => (
+        {Object.entries(boards).map(([player, board]) => (
           <div
             key={player}
             className={`board-wrapper ${
               board.resourceState.doneGen ? "gen-finished" : ""
-            }`}
+            } ${board.resourceState.ownTurn ? "turn-owner" : ""}`}
             style={{ background: board.playerColor }}
           >
             <div className="player-name">
