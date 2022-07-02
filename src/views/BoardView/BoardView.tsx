@@ -77,7 +77,7 @@ function PlayerBoardView({ logedPlayer }: PlayerBoardViewProps) {
       !syncing.current && syncLocalBoard();
     },
     // Solo se hace la primera vez que se crea el componente y cuando se queda stale
-    [outdated]
+    [outdated, boardGeneration]
   );
 
   useEffect(() => {

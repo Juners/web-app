@@ -1,7 +1,7 @@
 .global-view {
   .generation-info {
     font-family: "TFM";
-    font-size: xx-large;
+    font-size: 2rem;
     text-align: center;
     padding: 15px;
     border-bottom: 5px solid darkgray;
@@ -37,12 +37,21 @@
         font-family: "TFM";
         text-transform: uppercase;
         text-align: center;
-        font-size: 25px;
+        font-size: 2rem;
 
         span {
           padding: 0 20px;
           // border-bottom: 5px solid lightgray;
           // background-color: lightgray;
+        }
+      }
+      .board {
+        .ammount,
+        .generation {
+          font-size: 2rem;
+        }
+        .generation-wrapper {
+          width: 3rem;
         }
       }
     }
